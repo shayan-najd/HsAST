@@ -14,61 +14,40 @@ a report on the current status of the project in my point of view.
      d. generic instances of `Show`, `Data`, the like
      e. parser (e.g., to replace HSE)
      f. renamer/typechecker (e.g., for annotating the AST with types for tools)
-     g. desugarer (e.g., to replace my tool[1] for HSE and Richard's
-tool [2] for TH)
+     g. desugarer (e.g., to replace my tool[1] for HSE and Richard's tool [2] for TH)
    * harmonising TH and GHC front-end
-     a. replacing TH definitions in GHC as type/pattern synonyms of
-the extensible datatype
+     a. replacing TH definitions in GHC as type/pattern synonyms of the extensible datatype
      b. removing redundancy (e.g., the TH-HsSyn conversion, the printers)
-     c. providing phase-specific quotations and splices (e.g., see
-Richard's old wiki entry [3])
+     c. providing phase-specific quotations and splices (e.g., see Richard's old wiki entry [3])
 - Our approach has been to
-   Step 1. replace HsSyn datatypes with an extensible one
-   Step 2. replace the ping-pong style of handling source locations
-   Step 3. in parallel,
-               a. factor out and adopt the tools from GHC (e.g., the
-parser) and existing libraries (e.g., the exact-printer)
-               b. replace/remove machinery related to TH within GHC
-(e.g., add synonyms, and remove conversions)
+     Step 1. replace HsSyn datatypes with an extensible one
+     Step 2. replace the ping-pong style of handling source locations
+     Step 3. in parallel,
+               a. factor out and adopt the tools from GHC (e.g., the parser) and existing libraries (e.g., the exact-printer)
+               b. replace/remove machinery related to TH within GHC (e.g., add synonyms, and remove conversions)
 - Our progress with repect to above steps, is as follows.
    - Step 1:
      + partly implemented and landed the extensible TTG AST (before this summer project)
-     + a full implementation to follow the guidelines [4] is done
-(this summer project)
-        and is ready to be landed [5]
+     + a full implementation to follow the guidelines [4] is done (this summer project) and is ready to be landed [5]
    - Step 2:
-      + we have carefully studied the problem and found and documented
-practical solutions (this summer project) [6]
-      + we have discovered a simple generalisation of the TTG
-approach, studied it theoretically, and documented it (this summer
-project) [7]
-      + a full implementation of the practical solution [6] is done, the
-first patch is submitted to Phabricator (this summer project)[8]
+      + we have carefully studied the problem and found and documented practical solutions (this summer project) [6]
+      + we have discovered a simple generalisation of the TTG approach, studied it theoretically, and documented it (this summer project) [7]
+      + a full implementation of the practical solution [6] is done, the first patch is submitted to Phabricator (this summer project)[8]
    - Step 3a:
-       + we have a complete demo implementation (this summer project) for
-          pretty/debug-printer [9], some generic instances [10], and parser [11]
-         proving the feasibility of the approach.
+       + we have a complete demo implementation (this summer project) for pretty/debug-printer [9], some generic instances [10], and parser [11] proving the feasibility of the approach.
    - Step 3b.
-       + feasibility of using pattern synonyms has been confirmed with
-experiments, but the implementation is on-going
+       + feasibility of using pattern synonyms has been confirmed with experiments, but the implementation is on-going
 - Conclusion:
    We are really close to be able to collect the fruits of our efforts
    (e.g., the extensible AST is already landed and enabling practical applications)
    The patches are ready to be reviewed and landed.
-   I have to confess that I find the reviewing/landing process the
-bottleneck of the project;
-     this project demands big changes to the code base, and finding a
-proper gradual and mechanical method for committing the changes has
-been an issue.
-     Also, the nature of the work is a mixed research/development and
-requires theoretical study and controlled experiments (e.g., demo implementations proving
-the feasibility of ideas such as [10]).
-     That's one of the reasons why I haven't had a simple fork/branch
-of GHC main code base and followed the linear process of
-working/committing;
-     it was simply not suitable for this type of R&D work.
-     The next steps are clear: we review and land the patches
-gradually and then focus on artifacts in Step 3a and Step 3b.
+   I have to confess that I find the reviewing/landing process the bottleneck of the project;
+   this project demands big changes to the code base,
+   and finding a proper gradual and mechanical method for committing the changes has been an issue.
+   Also, the nature of the work is a mixed research/development and requires theoretical study and controlled experiments (e.g., demo implementations proving the feasibility of ideas such as [10]).
+   That's one of the reasons why I haven't had a simple fork/branch of GHC main code base and followed the linear process of working/committing;
+   it was simply not suitable for this type of R&D work.
+   The next steps are clear: we review and land the patches gradually and then focus on artifacts in Step 3a and Step 3b.
  
 /Shayan 
 
@@ -77,22 +56,16 @@ gradually and then focus on artifacts in Step 3a and Step 3b.
 [2] https://github.com/goldfirere/th-desugar
 [3] https://ghc.haskell.org/trac/ghc/wiki/TemplateHaskell/Introspective
 [4] https://ghc.haskell.org/trac/ghc/wiki/ImplementingTreesThatGrow/TreesThatGrowGuidance
-[5] The full extensible base AST (that is ready to be ported as a
-separate library) is available at
+[5] The full extensible base AST (that is ready to be ported as a separate library) is available at
         https://github.com/shayan-najd/HsAST
-     Since landing it requires small patches and that reviewing takes
-a long time, I have carefully annotated
-     the exact changes as todos. I will gladly explain further, if you want.
+    Since landing it requires small patches and that reviewing takes a long time, I have carefully annotated the exact changes as todos. I will gladly explain further, if you want.
 [6] https://ghc.haskell.org/trac/ghc/wiki/ImplementingTreesThatGrow/HandlingSourceLocations
 [7] https://github.com/shayan-najd/HsAST/blob/master/Paper.pdf
 [8] https://phabricator.haskell.org/D5036
-[9]  the old code at
-https://github.com/shayan-najd/HsParser/blob/master/OutputableInstances.hs,
-       the new code partly at https://github.com/shayan-najd/NanoGHC-Frontend
-[10] the old code at
-https://github.com/shayan-najd/HsParser/blob/master/ShowInstances.hs,
-       the new code partly at https://github.com/shayan-najd/NanoGHC-Frontend
-       the theory at
-https://ghc.haskell.org/trac/ghc/wiki/ImplementingTreesThatGrow/Instances
+[9]  the old code at https://github.com/shayan-najd/HsParser/blob/master/OutputableInstances.hs,
+     the new code partly at https://github.com/shayan-najd/NanoGHC-Frontend
+[10] the old code at https://github.com/shayan-najd/HsParser/blob/master/ShowInstances.hs,
+     the new code partly at https://github.com/shayan-najd/NanoGHC-Frontend
+     the theory at https://ghc.haskell.org/trac/ghc/wiki/ImplementingTreesThatGrow/Instances
 [11] the old code https://github.com/shayan-najd/HsParser/blob/master/Parser.y
-       the new code partly at https://github.com/shayan-najd/NanoGHC-Frontend
+     the new code partly at https://github.com/shayan-najd/NanoGHC-Frontend
